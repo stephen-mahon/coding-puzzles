@@ -4,20 +4,30 @@ import "fmt"
 
 func getMaxAdditionalDinersCount(N int64, K int64, M int32, S []int64) int64 {
 	seats := make([]int, N)
+	var tally int64
 
-	for i := range S {
-		seats[S[i]-1] = 1
+	for j := range S {
+		if j == 0 {
+			for i := int(S[j]) - 1; i >= 0; i -= int(M) {
+				seats[i] = 1
+				tally++
+			}
+		}
+		if j == len(S)-1 {
+			for i := int(S[len(S)-1]) - 1; i < len(seats); i += int(M) {
+				seats[i] = 1
+				tally++
+			}
+		}
+		fmt.Println(j)
+		//for i := int(S[j]); i < int(S[j+1]); i += int(M) {
+		//	seats[i] = 1
+		//	tally++
+		//}
+
 	}
 	fmt.Println(seats)
-
-	for i := range seats {
-		if (int64(i) < int64(len(seats))-K ) && (seats[i+int(K)] != 1)  {
-			fmt.Println(seats[i], "yes")
-		} else {
-			fmt.Println(seats[i], "no")
-		}
-	}
-	return 0
+	return tally - int64(len(S))
 }
 
 func main() {
@@ -28,5 +38,6 @@ func main() {
 	n, k = 10, 1
 	m = 2
 
-	getMaxAdditionalDinersCount(n, k, m, s)
+	x := getMaxAdditionalDinersCount(n, k, m, s)
+	fmt.Println(x)
 }
